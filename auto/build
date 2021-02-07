@@ -1,0 +1,26 @@
+#!/bin/sh
+
+set -e
+
+# This variable is required otherwise
+# /usr/share/live/build/scripts/build/binary_debian-installer fails because
+# the version is empty (nothing known in
+# /usr/share/live/build/functions/releases.sh)
+# export RELEASE_star="0.60"
+
+export MKSQUASHFS_OPTIONS=" -no-recovery -always-use-fragments -b 1048576"
+
+lb build noauto "${@}" 2>&1 | tee build.log
+
+#!/bin/sh
+
+set -e
+
+#~ lb clean --binary
+
+lb clean noauto "${@}"
+
+rm -f config/binary config/bootstrap config/chroot config/common config/source
+rm -f config/control
+
+rm -f *.log
