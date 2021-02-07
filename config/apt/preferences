@@ -1,0 +1,27 @@
+Package: systemd-sysv
+Pin: origin o=Debian
+Pin-Priority: -1
+
+Package: *
+Pin: origin mxrepo.com
+Pin-Priority: 100
+
+Package: systemd-shim
+Pin: origin mxrepo.com
+Pin-Priority: 600
+
+Package: systemd
+Pin:origin mxrepo.com
+Pin-Priority: 600
+
+Package: libsystemd0
+Pin: origin mxrepo.com
+Pin-Priority: 600
+
+Package: libpam-systemd
+Pin: origin mxrepo.com
+Pin-Priority: 600
+
+Package: libnss-systemd
+Pin: origin mxrepo.com
+Pin-Priority: 600
