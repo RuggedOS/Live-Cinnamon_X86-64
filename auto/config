@@ -1,0 +1,96 @@
+#!/bin/sh
+
+set -e
+
+#_A="amd64" \ CPU Architecture i386 = 32 BIT (686 and 686-pae) amd64 = 64 BIT
+_A="amd64" \
+#_AA="main contrib non-free" \ Archive Areas must have at least main, contrib and non-free are optional
+_AA="main contrib non-free" \
+#_BIT="x86-64" \ x86 = 32 BIT system x86-64 = 64 BIT system
+_BIT="x86-64" \
+#_DD="buster" \ Debian Distribution e.g. buster
+_DD="buster" \
+#_D="Cobber" \ Debian Derivative Distro e.g. Cobber or Rugged
+_D="Rugged" \
+#_F="false" \ When the answer to a question is false
+_F="false" \
+#_FL="amd64" \ Linux Flavour as in BIT. Options (currently) are 686 686-pae amd64. Flavor MUST match _A="" (CPU Architecture) to work
+_FL="amd64" \
+#_R="http://deb.debian.org/debian/" \ Repository Mirror to be used
+_R="http://deb.debian.org/debian/" \
+#_S="http://security.debian.org/" \ Security Repository Mirror, this is usually always http://security.debian.org/ unless you are building a non Debian system
+_S="http://security.debian.org/" \
+#_T="true" \ When the answer to a question is true
+_T="true" \
+#_DE="builder-choice" \ Desktop Environment or Window Manager used in the build. Choices are Cinnamon, Gnome, KDE, LXDE, LXQT, Mate, TDE (Trinity), XFCE, etc etc etc.
+_DE="Cinnamon" \
+#_WM="builder-choice" \ Window Manager used in the build. Choices are, currently, Fluxbox.
+_WM="Fluxbox" \
+#_Y="year" \ Shows the year, and month and day if needed, the build was created
+_Y="$(date +%Y%m%d)" \
+
+lb config noauto \
+	--apt "apt" \
+    --apt-http-proxy "http://localhost:3142/" \
+	--apt-indices "${_F}" \
+	--apt-options "--yes" \
+	--apt-recommends "${_F}" \
+	--apt-secure "${_T}" \
+	--apt-source-archives "${_F}" \
+	--aptitude-options "--assume-yes" \
+	--architectures "${_A}" \
+	--archive-areas "${_AA}" \
+	--backports "${_F}" \
+	--binary-filesystem "fat32" \
+	--bootappend-live "boot=live config quiet splash keyboard-layouts=us" \
+	--bootappend-live-failsafe "boot=live components memtest noapic noapm nodma nomce nolapic nomodeset nosmp nosplash vga=normal" \
+	--bootloaders "syslinux,grub-efi" \
+	--cache "${_T}" \
+	--cache-indices "${_F}" \
+	--cache-packages "${_T}" \
+	--checksums "md5 sha1 sha256" \
+    --chroot-filesystem "squashfs" \
+	--debian-installer "live" \
+	--debian-installer-distribution "${_DD}" \
+	--debian-installer-gui "${_F}" \
+	--distribution ""${_D}"-2020" \
+    --parent-distribution "${_DD}" \
+    --parent-debian-installer-distribution "${_DD}" \
+	--fdisk "fdisk" \
+	--firmware-binary "${_F}" \
+	--firmware-chroot "${_F}" \
+	--gzip-options "-6 --rsyncable" \
+	--hdd-label ""${_D}"Live" \
+	--initramfs "live-boot" \
+	--initramfs-compression "gzip" \
+	--interactive "${_F}" \
+	--iso-application ""${_D}"-Live-"${_DE}"" \
+	--iso-preparer "Michael" \
+	--iso-publisher ""${_D}" GNU/Linux" \
+	--iso-volume ""${_D}" "${_DE}" "${_BIT}" $(date +%Y%m%d)" \
+    --keyring-packages "mx19-archive-keyring" \
+	--linux-flavours "${_FL}" \
+    --linux-packages "linux-image" \
+    --mirror-binary "${_R}" \
+    --mirror-binary-security "${_S}" \
+    --mirror-bootstrap "${_R}" \
+    --mirror-chroot "${_R}" \
+    --mirror-chroot-security "${_S}" \
+    --mirror-debian-installer "${_R}" \
+    --parent-mirror-binary "${_R}" \
+    --parent-mirror-binary-security "${_S}" \
+    --parent-mirror-chroot "${_R}" \
+    --parent-mirror-chroot-security "${_S}" \
+    --parent-mirror-debian-installer "${_R}" \
+	--quiet "${_F}" \
+	--security "${_T}" \
+	--source "${_F}" \
+	--source-images "${_F}" \
+	--system "live" \
+	--tasksel "apt" \
+	--uefi-secure-boot "enable" \
+	--updates "${_T}" \
+	--verbose "${_T}" \
+	--win32-loader "${_F}" \
+	--zsync "${_T}" \
+"${@}"
